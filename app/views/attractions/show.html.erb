@@ -1,0 +1,39 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h1 class="card-title"><%= @attraction.name %></h1>
+
+    <p class="text-muted">
+      Category: <%= @attraction.category.name %>
+    </p>
+
+    <hr>
+
+    <h5>Description</h5>
+    <p><%= @attraction.description %></p>
+
+    <h5>Address</h5>
+    <p><%= @attraction.address %></p>
+
+    <h5>Entry Fee</h5>
+    <p>$<%= @attraction.entry_fee %></p>
+
+    <h5>Location Coordinates</h5>
+
+<p>
+  Latitude: <%= @attraction.latitude %><br>
+  Longitude: <%= @attraction.longitude %>
+</p>
+
+<% if @attraction.latitude.present? && @attraction.longitude.present? %>
+  <%= link_to "View on Google Maps",
+      "https://www.google.com/maps?q=#{@attraction.latitude},#{@attraction.longitude}",
+      target: "_blank",
+      rel: "noopener",
+      class: "btn btn-success mb-3" %>
+<% end %>
+
+    <%= link_to "Back to Attractions",
+        attractions_path,
+        class: "btn btn-secondary" %>
+  </div>
+</div>

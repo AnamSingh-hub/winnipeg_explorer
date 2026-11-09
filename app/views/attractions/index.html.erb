@@ -1,0 +1,91 @@
+
+<h1 class="mb-4">Explore Winnipeg Attractions</h1>
+
+<p class="text-muted">
+  Browse parks, museums, landmarks and other places in Winnipeg.
+</p>
+
+<!-- Search Form -->
+<%= form_with url: attractions_path, method: :get, local: true do |form| %>
+  <div class="input-group mb-4">
+    <%= form.text_field :search,
+        value: params[:search],
+        placeholder: "Search attractions by name, description or address...",
+        class: "form-control" %>
+
+    <%= form.submit "Search", class: "btn btn-primary" %>
+
+    <%= link_to "Clear", attractions_path,
+        class: "btn btn-secondary" %>
+  </div>
+
+  <% if params[:category_id].present? %>
+    <%= hidden_field_tag :category_id, params[:category_id] %>
+  <% end %>
+<% end %>
+
+<!-- Attraction Cards -->
+<div class="row">
+  <% @attractions.each do |attraction| %>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= attraction.name %>
+          </h5>
+
+          <p class="card-text">
+            <%= attraction.description %>
+          </p>
+
+          <p>
+            <strong>Category:</strong>
+            <%= attraction.category.name %>
+          </p>
+
+          <p>
+            <strong>Entry Fee:</strong>
+            $<%= attraction.entry_fee %>
+          </p>
+
+          <%= link_to "View Details",
+              attraction_path(attraction),
+              class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+
+  <div>
+    <% if @page > 1 %>
+      <%= link_to "Previous",
+          attractions_path(
+            page: @page - 1,
+            search: params[:search],
+            category_id: params[:category_id]
+          ),
+          class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+
+  <p class="mb-0">
+    Page <%= @page %> of <%= @total_pages %>
+  </p>
+
+  <div>
+    <% if @page < @total_pages %>
+      <%= link_to "Next",
+          attractions_path(
+            page: @page + 1,
+            search: params[:search],
+            category_id: params[:category_id]
+          ),
+          class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+</div>
